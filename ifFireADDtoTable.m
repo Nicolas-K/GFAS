@@ -70,28 +70,35 @@ stretchNBR = 127.5 * tmNBR + 127.5; %As NBR goes from -1 to 1, this grants it's 
 
 fire = 1;
 if fire == 1
-    sns.publish(topicARN, 'Alerta de Incêndio. Ligue 190');
     
-    %Create objeto Cliente para Criar objeto database
-    ddbClient = aws.dynamodbv2.AmazonDynamoDBClient;
-    ddbClient.initialize();
+    
+    
+    %%Create objeto Cliente para Criar objeto database
+    %ddbClient = aws.dynamodbv2.AmazonDynamoDBClient;
+    %ddbClient.initialize();
 
-    %Criando objeto Documento da database
-    ddb = aws.dynamodbv2.document.DynamoDB(ddbClient);
+    %%Criando objeto Documento da database
+    %ddb = aws.dynamodbv2.document.DynamoDB(ddbClient);
 
-    %Pegando a tabela de incendios
-    table = ddb.getTable('incendio');
+    %%Pegando a tabela de incendios
+    %table = ddb.getTable('incendio');
 
-    %Criando um item da tabela 'incendio' e Adicionando à Tabela
-    UUID = char(java.util.UUID.randomUUID); %Gerando o ID
-    dataEhora = char(datetime('now'));      %Pegando Data e Hora
+    %%Criando um item da tabela 'incendio' e Adicionando à Tabela
+    %UUID = char(java.util.UUID.randomUUID); %Gerando o ID
+    %dataEhora = char(datetime('now'));      %Pegando Data e Hora
+    dataEhora = char(datetime('now','Format','yyyy-MM-dd''T''HH:mm:ss''Z'''))         %Pegando Data e Hora
 
-    item = aws.dynamodbv2.document.Item();
-    item.withPrimaryKey('id', UUID);
-    item.withString('date', dataEhora);
-    item.withString('latitude', '-100.30398');
-    item.withString('longitude', '-100.56679');
-    putItemOutcome = table.putItem(item);
+    %item = aws.dynamodbv2.document.Item();
+    %item.withPrimaryKey('id', UUID);
+    %item.withString('date', dataEhora);
+    %item.withString('latitude', '-100.30398');
+    %item.withString('longitude', '-100.56679');
+    %putItemOutcome = table.putItem(item);
+    
+    s = struct('eventDate',dataEhora,'latitude','-100.30398','longitude','-100.56679');
+    jsonS = jsonencode(s);    
+
+    sns.publish(topicARN, jsonS);    
 end
 
 disp('DONE');
