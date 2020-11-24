@@ -86,7 +86,7 @@ if fire == 1
     %%Criando um item da tabela 'incendio' e Adicionando à Tabela
     %UUID = char(java.util.UUID.randomUUID); %Gerando o ID
     %dataEhora = char(datetime('now'));      %Pegando Data e Hora
-    dataEhora = char(datetime('now','Format','yyyy-MM-dd''T''HH:mm:ss''Z'''))         %Pegando Data e Hora
+    dataEhora = char(datetime('now','Format','yyyy-MM-dd''T''HH:mm:ss''Z'''));         %Pegando Data e Hora
 
     %item = aws.dynamodbv2.document.Item();
     %item.withPrimaryKey('id', UUID);
@@ -95,7 +95,7 @@ if fire == 1
     %item.withString('longitude', '-100.56679');
     %putItemOutcome = table.putItem(item);
     
-    s = struct('eventDate',dataEhora,'latitude','-100.30398','longitude','-100.56679');
+    s = struct('eventDate',dataEhora,'latitude','-22.97331272','longitude','-47.04701   76');
     jsonS = jsonencode(s);    
 
     sns.publish(topicARN, jsonS);    
